@@ -1,0 +1,122 @@
+import java.io.File; 
+import java.io.*;
+import java.util.Scanner;
+import java.lang.String;
+import java.lang.Math;
+public class temp
+{
+    int[] pizza_slice;
+    int max_slice=0,type_pizza=0;
+    int length=0;
+    public void input() throws Exception
+    {
+        File file = new File("D:\\TEMP\\a_example.in"); 
+        Scanner sc = new Scanner(file);
+        int count=0,temp=0;
+        String n="",str="";
+        while(sc.hasNextLine())
+        { 
+            str = sc.nextLine(); 
+            String[] ne=str.split(" ");
+            if(count==0)
+            {
+                max_slice=Integer.parseInt(ne[0]);
+                type_pizza=Integer.parseInt(ne[1]);
+            }
+            else
+            {
+                length=ne.length;
+                pizza_slice=new int[length];
+                for(int i=0;i<length;i++)
+                {
+                    pizza_slice[i]=Integer.parseInt(ne[i]);
+                }
+            }
+            ++count;
+        }
+    }
+    public String binary(int a)
+    {
+        int rem=0;
+        String s="";
+        while(a>0)
+        {
+            rem=a%2;
+            a=a/2;
+            s=rem+s;
+        }
+        return s;
+    }
+    public void pizza()throws Exception
+    {
+        temp ob=new temp();
+        ob.input();
+        int len=0,check=0,n=ob.type_pizza,pow;
+        int rem=0,val=0,count=0;
+        int bin,p;
+        String s="",tem="",set="";
+        String fileContent="";
+        pow=(int)Math.pow(2,n);
+        FileWriter fileWriter = new FileWriter("D:/TEMP/testfile.txt");
+        for(int i=1;i<pow;i++)
+        {
+            s=ob.binary(i);
+            len=s.length();
+            tem=s;
+            val=0;
+            for(int j=0;j<len;j++)
+            {
+                val=val+((Character.getNumericValue(s.charAt(len-j-1)))*(ob.pizza_slice[n-j-1]));
+            }
+            //System.out.println("VALUE = "+val);
+            //System.out.println("SET = "+s);
+            //String fileContent=s+" + "+val+"\r\n";
+            //fileWriter.write(fileContent);
+            if((val>check)&&(val<(ob.max_slice+1)))
+            {
+                check=val;
+                set=s;
+            }
+            if(val==(ob.max_slice))
+            {
+                break;
+            }
+        }
+        for(int j=0;j<len;j++)
+        {
+            if((Character.getNumericValue(set.charAt(j)))==1)
+            {
+                val=(ob.pizza_slice[j]);
+                ++count;
+            }
+        }
+        fileContent=Integer.toString(count);
+        fileWriter.write(fileContent+"\r\n");
+        for(int j=0;j<len;j++)
+        {
+            if((Character.getNumericValue(s.charAt(j)))==1)
+            {
+                val=(ob.pizza_slice[j]);
+                fileContent=Integer.toString(val);
+                fileWriter.write(fileContent+" ");
+            }
+        }
+        System.out.println("\n\nSET = "+set);
+        System.out.println("VALUE = "+check);
+        //String fileContent = "Hello Learner !! Welcome to howtodoinjava.com.";
+        //FileWriter fileWriter = new FileWriter("D:/TEMP/samplefile2.txt");
+        fileWriter.close();
+    }
+    public static void main(String[] args)throws Exception
+    {
+        temp ob=new temp();
+        ob.input();
+        System.out.println("MAXIMUM SLICES = "+ob.max_slice);
+        System.out.println("NUMBER OF PIZZAS = "+ob.type_pizza);
+        System.out.println("NUMBER OF SLICES IN EACH PIZZA : ");
+        for(int i=0;i<ob.length;i++)
+        {
+            System.out.print(ob.pizza_slice[i]+" ");
+        }
+    }
+}
